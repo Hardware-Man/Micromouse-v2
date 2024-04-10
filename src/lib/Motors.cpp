@@ -16,14 +16,15 @@ Encoder ENCA(4,3); //3,4
 
 void Motors::enableMotors() {
 
-    digitalWrite(pin_STBY, HIGH);
+    //digitalWrite(pin_STBY, HIGH);
 
 }
 
 
 void Motors::disableMotors() {
 
-    digitalWrite(pin_STBY, LOW);
+    //digitalWrite(pin_STBY, LOW);
+    
 }
 
 /**

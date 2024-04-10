@@ -8,15 +8,15 @@
 
 #ifndef V3
 
-#define pin_PWMA 6
-#define pin_PWMB 5
-#define pin_AIN1 8
-#define pin_AIN2 7
-extern Encoder ENCB;
-#define pin_BIN1 9
-#define pin_BIN2 10
-#define pin_STBY 11
-extern Encoder ENCA;
+#define pin_PWMA 11
+#define pin_PWMB 12
+#define pin_AIN1 0
+#define pin_AIN2 1
+extern Encoder encoder_instanceB;
+#define pin_BIN1 13
+#define pin_BIN2 15
+//#define pin_STBY 11
+extern Encoder encoder_instanceA;
 
 #endif
 #ifdef V3
