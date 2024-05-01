@@ -8,8 +8,8 @@
 
 // #else
 
-Encoder ENCB(2,1);  // these may be reversed
-Encoder ENCA(4,3); //3,4
+Encoder ENCB(10,9);  // these may be reversed
+Encoder ENCA(8,7); // these may be reversed
 
 // #endif
 
@@ -32,7 +32,7 @@ void Motors::disableMotors() {
  *  speed takes integer from 0 to 255
  */
 void Motors::setLeftMotorSpeed(int speed) {
-    analogWrite(pin_PWMA, speed);
+    analogWrite(pin_PWMA, speed*0.765);
 }
 
 
@@ -62,7 +62,7 @@ void Motors::setMotorsSpeed(int speed) {
  *  forward takes boolean: true is foward, false is backwards
  */
 void Motors::setLeftMotorDirection(bool forward) {
-    if (forward == true) {
+    if (forward == false) {
         digitalWrite(pin_AIN1, LOW);
         //Serial.println("AIN1 high and AIN2 low");
         digitalWrite(pin_AIN2, HIGH);
@@ -91,7 +91,7 @@ void Motors::setStraight(){
  *  forward takes boolean: true is foward, false is backwards
  */
 void Motors::setRightMotorDirection(bool forward) {
-    if (forward == true) {
+    if (forward == false) {
         digitalWrite(pin_BIN1, LOW);
         //Serial.println("BIN1 high and BIN2 low");
         digitalWrite(pin_BIN2, HIGH);

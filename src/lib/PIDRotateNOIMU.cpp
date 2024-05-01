@@ -23,8 +23,8 @@ void PIDRotateNOIMU::rotate_to_angle(double target_position) {
 
     int ABdiff = 0;
         
-    encoder_instanceA.write(0);
-    encoder_instanceB.write(0);
+    ENCA.write(0);
+    ENCB.write(0);
 
     int exitCount = 0;
 
@@ -32,15 +32,15 @@ void PIDRotateNOIMU::rotate_to_angle(double target_position) {
 
         prevA = curA;
         prevB = curB;
-        curA = encoder_instanceA.read();
-        curB = encoder_instanceA.read();
+        curA = ENCA.read();
+        curB = ENCA.read();
         ABdiff = (curA-prevA) - (curB-prevB);
 
         adj_offset = ABdiff * 1;
 
 
         //current_position = imu_instance->getHeading();
-        current_position = encoder_instanceA.read();//(encoder_instanceA.read() + encoder_instanceB.read())/2;
+        current_position = ENCA.read();//(ENCA.read() + ENCB.read())/2;
 
         // handle cases of numbers above 360
 
@@ -127,12 +127,12 @@ void PIDRotateNOIMU::rotate_to_angle(double target_position) {
         Serial.print(motor_output_r);
         Serial.println();
 
-        Serial.print("encoder_instanceA: ");
-        Serial.print(encoder_instanceA.read());
+        Serial.print("ENCA: ");
+        Serial.print(ENCA.read());
         Serial.println();
 
-        Serial.print("encoder_instanceB: ");
-        Serial.print(encoder_instanceB.read());
+        Serial.print("ENCB: ");
+        Serial.print(ENCB.read());
         Serial.println();
 
         motors_instance->setLeftMotorSpeed(motor_output_l);

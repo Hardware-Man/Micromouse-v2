@@ -12,11 +12,11 @@
 #define pin_PWMB 12
 #define pin_AIN1 0
 #define pin_AIN2 1
-extern Encoder encoder_instanceB;
+extern Encoder ENCB;
 #define pin_BIN1 13
 #define pin_BIN2 15
 //#define pin_STBY 11
-extern Encoder encoder_instanceA;
+extern Encoder ENCA;
 
 #endif
 #ifdef V3

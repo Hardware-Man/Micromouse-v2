@@ -17,7 +17,7 @@ IMU::IMU() {
     if (!bno.begin())
     {
         Serial.print("No BNO055 detected");
-        while (1);
+        //while (1);
     }
 
 

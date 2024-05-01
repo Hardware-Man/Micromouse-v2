@@ -1,31 +1,20 @@
-
 #ifndef PIDSTRAIGHT_H
 #define PIDSTRAIGHT_H
-#include "IMU.h"
-#include "motors.h"
-#include "tof.h"
-#include "PidRotate.h"
-class PIDstraight{
+
+#include <Arduino.h>
+
+class PIDStraight {
+    //this class will contain the relevant code for the PIDStraight command. This command will just use two nested PID loops, the inner
+    //using the "black magic" straight drive trick using the IMU heading, and the outer scaling it by the encoder values.
+
     public:
-        void drive_to_position(double distance);
-        void gointowall();
-        PIDstraight();
-        ~PIDstraight();
-    private:
-    tof* tof_instance;
-    IMU* imu;
-        double map(double error);
+        double kP = 0.1;
+        double kI = 0.001;//0.00001;
+        double kD = 0.0;
 
-        int Proportion;
-        int Integral = 0;
-        int Derivative;
-        int lasterror = 0;
-        int leftpower = 50;
-        int rightpower = 50;
-
-         const double Kp = 6;
-        const double Ki = 0.00007;
-        const int Kd = 20;
+        void drive_to_position(double target_position);
 };
-// PIDstraight* pidstraight_instance;
+
+extern PIDStraight* pidstraight_instance;
+
 #endif

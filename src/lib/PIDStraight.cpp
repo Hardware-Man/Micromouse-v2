@@ -1,82 +1,150 @@
+#include <math.h>
+#include <Arduino.h>
 #include "PIDStraight.h"
-#include<cstdlib>
-PIDstraight::PIDstraight(){
-    // imu = new IMU();
-    motors_instance->setTick(0);
-    // tof_instance = new tof();
-    // pidrotate_instance = new PIDRotate();
-    
+#include "Motors.h"
+#include "IMU.h"
 
-    
+void PIDStraight::drive_to_position(double target_position) {
+    double current_position = 0;
+    int current_time = 0;
+    int prev_time = 0;
+    double error = 0.0;
+    double prev_error = 0.0;
+    double total_error;
 
-}
+    int adj_offset = 0;
 
-PIDstraight::~PIDstraight(){
-    // delete imu;
-    // delete tof_instance;
-    // delete pidrotate_instance;
-   
-}
-/**
- * Allows the bot to go straight weeeee
- * 4.82370523622 inches = 360 is circumference
-*/
+    bool exited = false;
 
-void PIDstraight::drive_to_position(double distance){
-    distance *= 82;
-    motors_instance->enableMotors();
-    motors_instance->setMotorsDirection(true);
-    motors_instance->setTick(0);
-    delay(100);
-    motors_instance->setMotorsSpeed(50); 
-            
-        while(((double)(((abs(motors_instance->getlefttick())) + (abs(motors_instance->getrighttick())))/2) < distance)){
-            Proportion = ( abs(motors_instance->getlefttick())) - (abs(motors_instance->getrighttick()));
-            Integral += Proportion;
-            Derivative = Proportion - lasterror;
-            int total = (Kp * Proportion) + Ki * Integral + Kd * Derivative;
-            leftpower -= total;
-            rightpower += total;
-            
-            leftpower = constrain(leftpower,0,100);
-            rightpower = constrain(rightpower,0,100);
-            motors_instance->setLeftMotorSpeed(leftpower);
-            motors_instance->setRightMotorSpeed(rightpower);
-            lasterror = Proportion; 
-            // delay(20);
+    int curA = 0;
+    int curB = 0;
+    int prevA = 0;
+    int prevB = 0;
 
+    int ABdiff = 0;
+        
+    ENCA.write(0);
+    ENCB.write(0);
+
+    int exitCount = 0;
+
+    while (true) {
+
+        prevA = curA;
+        prevB = curB;
+        curA = ENCA.read();
+        curB = ENCA.read();
+        ABdiff = (curA-prevA) - (curB-prevB);
+
+        adj_offset = ABdiff * 1;
+
+
+        //current_position = imu_instance->getHeading();
+        current_position = ENCA.read();//(ENCA.read() + ENCB.read())/2;
+
+        // handle cases of numbers above 360
+
+        // for example, the number -718 will become 718, will become -358
+        
+
+        prev_error = error;
+        //error = (target_position * 58.2124805) - current_position; //72.74463
+        error = (target_position * 72.74463) - current_position;
+
+        if (abs(error) < 10.0) {
+            exitCount++;
         }
-    
-        motors_instance->setMotorsSpeed(0);
-        delay(10);
-        if(tof_instance->readF() < 175){
-            gointowall();
+
+         if (exitCount > 1000) {
+            Serial.println("breaking");
+            break;
         }
 
-}
-void PIDstraight::gointowall(){
-    motors_instance->setMotorsDirection(true);
-    while(tof_instance->readF() > 30 && tof_instance->readF() < 175){
-          motors_instance->setMotorsSpeed(40);
-          delay(40);
-          motors_instance->setMotorsSpeed(0);
-          delay(90);
+        total_error += abs(error);
+        prev_time = current_time;
+        current_time = millis();
 
+        //int target_position = current_position + position;
+
+        Serial.print("current position: ");
+        Serial.print(current_position);
+        Serial.println();
+
+        /*Serial.print("target position: ");
+        Serial.print(target_position);
+        Serial.println();*/
+
+
+        /*if (error > 180.0) {
+            error -= 180.0;
+        }
+
+        if (error < -180.0) {
+            error += 180.0;
+        }*/
+
+        Serial.print("error: ");
+        Serial.print(error);
+        Serial.println();
+
+        //double motor_output = (kP * error  + kD * (error-prev_error)/(current_time-prev_time) + kI * total_error)*25;
+        double motor_output_l = (kP * error + kI*total_error)*10;
+        double motor_output_r = (kP * error + kI*total_error)*10;
+        
+        if (error > 0.0) {
+            motors_instance->setLeftMotorDirection(true);//false
+            Serial.println("left false and right true");
+            motors_instance->setRightMotorDirection(false);//true
+        } else {
+            motors_instance->setLeftMotorDirection(false);//true
+            Serial.println("left true and right false");
+            motors_instance->setRightMotorDirection(true);//false
+            motor_output_l *= -1;
+            motor_output_r *= -1;
+        }
+
+        if ((curA-prevA) > (curB-prevB)) {
+            motor_output_l += adj_offset;
+            motor_output_r -= adj_offset;
+        } else {
+            motor_output_l -= adj_offset;
+            motor_output_r += adj_offset;
+        }
+
+        if (motor_output_l > 255.0) {
+            motor_output_l = 255.0;
+        }
+
+        if (motor_output_r > 255.0) {
+            motor_output_r = 255.0;
+        }
+
+        Serial.print("motor output_l: ");
+        Serial.print(motor_output_l);
+        Serial.println();
+
+        Serial.print("motor output_r: ");
+        Serial.print(motor_output_r);
+        Serial.println();
+
+        Serial.print("ENCA: ");
+        Serial.print(ENCA.read());
+        Serial.println();
+
+        Serial.print("ENCB: ");
+        Serial.print(ENCB.read());
+        Serial.println();
+
+        motors_instance->setLeftMotorSpeed(motor_output_l);
+        motors_instance->setRightMotorSpeed(motor_output_r);
     }
-    motors_instance->setMotorsDirection(false);
-    while(tof_instance->readF() < 25){
-        motors_instance->setMotorsSpeed(40);
-          delay(40);
-          motors_instance->setMotorsSpeed(0);
-          delay(90);
-    }
-   
+
+    exited = true;
+    motors_instance->setMotorsSpeed(0.0);
+    Serial.print("exited: ");
+    Serial.println(exited);
+    
+    
 }
-double PIDstraight::map(double error){
-    if (error > 180.0) {
-        return -360.0 + error;
-    } else if (error < -180.0) {
-        return 360.0 + error;
-    }
-    return error;
-}
+
+PIDStraight* pidstraight_instance = new PIDStraight();
