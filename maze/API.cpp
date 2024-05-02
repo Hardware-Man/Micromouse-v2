@@ -37,7 +37,7 @@ bool API::wallLeft() {
     std::string response;
     std::cin >> response;
     return response == "true";
-}
+}//aeuntahoeu
 
 void API::moveForward(int distance) {
     std::cout << "moveForward ";

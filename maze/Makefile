@@ -1,11 +1,17 @@
-maze.exe: API.o flood.o main.o
-	g++ API.o flood.o main.o -o maze
+Maze: bitmanip.o API.o DFS.o main.o maze.o
+	g++ -Og -g bitmanip.o API.o DFS.o main.o maze.o -o Maze
+
+bitmanip.o: bitmanip.cpp
+	g++ -c bitmanip.cpp
+
 API.o: API.cpp
-	g++    -c -o API.o API.cpp
-flood.o: flood.cpp
-	g++    -c -o flood.o flood.cpp
+	g++ -c API.cpp
+
+DFS.o: DFS.cpp
+	g++ -c DFS.cpp
+
 main.o: main.cpp
-	g++    -c -o main.o main.cpp
-clean: maze.exe
-	rm *.o
-	rm maze.exe
+	g++ -c main.cpp
+
+maze.o: maze.cpp
+	g++ -c maze.cpp
