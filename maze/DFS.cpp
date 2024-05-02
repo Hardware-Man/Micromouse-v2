@@ -17,74 +17,86 @@ static Dot_t currlocation;
 
 void setwalls(char matrix[MAZESIZE][MAZESIZE], char x, char y)
 {
-    //std::cerr<< "Setting walls for position (" << static_cast<int>(x) << ", " << static_cast<int>(y) << ")" << std::endl;
+    // std::cerr<< "Setting walls for position (" << static_cast<int>(x) << ", " << static_cast<int>(y) << ")" << std::endl;
     if (API::wallFront())
     {
         if (currlocation.dir == 'N')
         {
-            //std::cerr<< "Setting North wall" << std::endl;
+            // std::cerr<< "Setting North wall" << std::endl;
             setNorth(&matrix[x][y], true);
+            API::setWall(x, y, 'n');
         }
         else if (currlocation.dir == 'S')
         {
-            //std::cerr<< "Setting South wall" << std::endl;
+            // std::cerr<< "Setting South wall" << std::endl;
             setSouth(&matrix[x][y], true);
+            API::setWall(x, y, 's');
         }
         else if (currlocation.dir == 'E')
         {
-            //std::cerr<< "Setting East wall" << std::endl;
+            // std::cerr<< "Setting East wall" << std::endl;
             setEast(&matrix[x][y], true);
+            API::setWall(x, y, 'e');
         }
         else
         {
-            //std::cerr<< "Setting West wall" << std::endl;
+            // std::cerr<< "Setting West wall" << std::endl;
             setWest(&matrix[x][y], true);
+            API::setWall(x, y, 'w');
         }
     }
     if (API::wallLeft())
     {
         if (currlocation.dir == 'N')
         {
-            //std::cerr<< "Setting West wall (Left)" << std::endl;
+            // std::cerr<< "Setting West wall (Left)" << std::endl;
             setWest(&matrix[x][y], true);
+            API::setWall(x, y, 'w');
         }
         else if (currlocation.dir == 'S')
         {
-            //std::cerr<< "Setting East wall (Left)" << std::endl;
+            // std::cerr<< "Setting East wall (Left)" << std::endl;
             setEast(&matrix[x][y], true);
+            API::setWall(x, y, 'e');
         }
         else if (currlocation.dir == 'E')
         {
-            //std::cerr<< "Setting North wall (Left)" << std::endl;
+            // std::cerr<< "Setting North wall (Left)" << std::endl;
             setNorth(&matrix[x][y], true);
+            API::setWall(x, y, 'n');
         }
         else
         {
-            //std::cerr<< "Setting South wall (Left)" << std::endl;
+            // std::cerr<< "Setting South wall (Left)" << std::endl;
             setSouth(&matrix[x][y], true);
+            API::setWall(x, y, 's');
         }
     }
     if (API::wallRight())
     {
         if (currlocation.dir == 'N')
         {
-            //std::cerr<< "Setting East wall (Right)" << std::endl;
+            // std::cerr<< "Setting East wall (Right)" << std::endl;
             setEast(&matrix[x][y], true);
+            API::setWall(x, y, 'e');
         }
         else if (currlocation.dir == 'S')
         {
-            //std::cerr<< "Setting West wall (Right)" << std::endl;
+            // std::cerr<< "Setting West wall (Right)" << std::endl;
             setWest(&matrix[x][y], true);
+            API::setWall(x, y, 'w');
         }
         else if (currlocation.dir == 'E')
         {
-            //std::cerr<< "Setting South wall (Right)" << std::endl;
+            // std::cerr<< "Setting South wall (Right)" << std::endl;
             setSouth(&matrix[x][y], true);
+            API::setWall(x, y, 'S');
         }
         else
         {
-            //std::cerr<< "Setting North wall (Right)" << std::endl;
+            // std::cerr<< "Setting North wall (Right)" << std::endl;
             setNorth(&matrix[x][y], true);
+            API::setWall(x, y, 'n');
         }
     }
 }
@@ -167,38 +179,41 @@ void move(char direction)
 
 void movetopoint(Dot_t input)
 {
-    //std::cerr<< "Moving to point("<<static_cast<int>(input.x)<<","<<static_cast<int>(input.y)<<") Current location: (" << static_cast<int>(currlocation.x) << ", " << static_cast<int>(currlocation.y) << ")" << std::endl;
+    // std::cerr<< "Moving to point("<<static_cast<int>(input.x)<<","<<static_cast<int>(input.y)<<") Current location: (" << static_cast<int>(currlocation.x) << ", " << static_cast<int>(currlocation.y) << ")" << std::endl;
     if (input.x == currlocation.x && input.y == currlocation.y)
     {
-        //std::cerr<< "Already at the destination." << std::endl;
+        // std::cerr<< "Already at the destination." << std::endl;
         return;
     }
     else if (input.x == currlocation.x && input.y == currlocation.y + 1)
     { // check if N
-        //std::cerr<< "Moving North" << std::endl;
+        // std::cerr<< "Moving North" << std::endl;
         move('N');
     }
     else if (input.x == currlocation.x - 1 && input.y == currlocation.y)
     { // check if W
-        //std::cerr<< "Moving West" << std::endl;
+        // std::cerr<< "Moving West" << std::endl;
         move('W');
     }
     else if (input.x == currlocation.x && input.y == currlocation.y - 1)
     { // check if S
-        //std::cerr<< "Moving South" << std::endl;
+        // std::cerr<< "Moving South" << std::endl;
         move('S');
     }
     else if (input.x == currlocation.x + 1 && input.y == currlocation.y)
     { // it's E
-        //std::cerr<< "Moving East" << std::endl;
+        // std::cerr<< "Moving East" << std::endl;
         move('E');
     }
     else
     {
-        //std::cerr<<"None of the above"<<std::endl;
+        // std::cerr<<"None of the above"<<std::endl;
     }
 }
-
+bool comparedots(Dot_t a, Dot_t b)
+{
+    return a.x == b.x && a.y == b.y;
+}
 /*
 procedure DFS_iterative(G, v) is
     let S be a stack
@@ -210,120 +225,90 @@ procedure DFS_iterative(G, v) is
             for all edges from v to w in G.adjacentEdges(v) do
                 S.push(w)
 */
-void DFS(char matrix[16][16])
-{
-    stack<Dot_t> tovisit;
-    stack<Dot_t> path;
+void DFS(char matrix[16][16]){
+    stack<Dot_t> branch;
+    stack<Dot_t> location;
     currlocation = {0, 0, 'N'};
-    tovisit.push(currlocation);
-    while (!tovisit.empty())
-    {
+    location.push(currlocation);
+    while (!location.empty()){
         // pop the first node to visit
-        Dot_t pope = tovisit.top();
-        while(closeVisited(matrix[pope.x][pope.y])){
-            //std::cerr<<"to go: ("<<static_cast<int>(pope.x)<<","<<static_cast<int>(pope.y)<<")"<<std::endl;
-            tovisit.pop();
-            pope = tovisit.top();
-        }
-       
+        Dot_t pope = location.top();
+        // std::cerr<<static_cast<int>(pope.x)<<","<<static_cast<int>(pope.y)<<std::endl;
         movetopoint(pope);
-        tovisit.pop();
-        // Add debug prints to track the path of the traversal
-        //std::cerr << "Visiting: (" << static_cast<int>(currlocation.x) << "," << static_cast<int>(currlocation.y) << ")" << std::endl;
-
-        // Check if the current location has already been visited
-        if (closeVisited(matrix[currlocation.x][currlocation.y])) {
-            //std::cerr << "Already visited: (" << static_cast<int>(currlocation.x) << "," << static_cast<int>(currlocation.y) << ")" << std::endl;
-            // continue; // Skip this location if it's already visited
-        }
-
-        // Rest of your traversal logic goes here
-
-        path.push(currlocation); // add vertex to path
-        unsigned char pushed = 0;
-        std::cerr << "Added to path: (" << static_cast<int>(currlocation.x) << "," << static_cast<int>(currlocation.y) << ")" << std::endl;
         setwalls(matrix, currlocation.x, currlocation.y);
         setVisited(&matrix[currlocation.x][currlocation.y], true);
         API::setColor(currlocation.x, currlocation.y, 'b');
-        
-        // check all edges
+
+        // check if this has multiple edges
+        uint8_t connections = 0;
+        if (!closeNorth(matrix[currlocation.x][currlocation.y]) && !closeVisited(matrix[currlocation.x][currlocation.y + 1]))
+            connections++;
+        if (!closeSouth(matrix[currlocation.x][currlocation.y]) && !closeVisited(matrix[currlocation.x][currlocation.y - 1]))
+            connections++;
+        if (!closeEast(matrix[currlocation.x][currlocation.y]) && !closeVisited(matrix[currlocation.x + 1][currlocation.y]))
+            connections++;
+        if (!closeWest(matrix[currlocation.x][currlocation.y]) && !closeVisited(matrix[currlocation.x - 1][currlocation.y]))
+            connections++;
+        // multiple branches
+        if (connections > 1){
+            // std::cerr<<"branches ("<<static_cast<int>(currlocation.x)<<","<<static_cast<int>(currlocation.y)<<")"<<std::endl;
+            branch.push(pope);
+            API::setColor(currlocation.x, currlocation.y, 'g');
+        }
+        else
+        {
+            API::setColor(currlocation.x, currlocation.y, 'b');
+        }
+
+        // adds neighbors to stack
         if (!closeNorth(matrix[currlocation.x][currlocation.y]) && !closeVisited(matrix[currlocation.x][currlocation.y + 1]))
         {
             Dot_t idiot = {currlocation.x, currlocation.y + 1, 'N'};
-            tovisit.push(idiot);
-            pushed++;
-            //std::cerr << "Added neighbor to the north: (" << static_cast<int>(idiot.x) << "," << static_cast<int>(idiot.y) << ")" << std::endl;
-        }
-        if (!closeEast(matrix[currlocation.x][currlocation.y]) && !closeVisited(matrix[currlocation.x + 1][currlocation.y]))
-        {
-            Dot_t idiot = {currlocation.x + 1, currlocation.y, 'E'};
-            tovisit.push(idiot);
-            pushed++;
-            //std::cerr << "Added neighbor to the east: (" << static_cast<int>(idiot.x) << "," << static_cast<int>(idiot.y) << ")" << std::endl;
+            std::cerr << "pushing (" << static_cast<int>(currlocation.x) << "," << static_cast<int>(currlocation.y) << ")" << std::endl;
+            location.push(idiot);
         }
         if (!closeSouth(matrix[currlocation.x][currlocation.y]) && !closeVisited(matrix[currlocation.x][currlocation.y - 1]))
         {
             Dot_t idiot = {currlocation.x, currlocation.y - 1, 'S'};
-            tovisit.push(idiot);
-            pushed++;
-            //std::cerr << "Added neighbor to the south: (" << static_cast<int>(idiot.x) << "," << static_cast<int>(idiot.y) << ")" << std::endl;
+            std::cerr << "pushing (" << static_cast<int>(currlocation.x) << "," << static_cast<int>(currlocation.y) << ")" << std::endl;
+            location.push(idiot);
+        }
+        if (!closeEast(matrix[currlocation.x][currlocation.y]) && !closeVisited(matrix[currlocation.x + 1][currlocation.y]))
+        {
+            Dot_t idiot = {currlocation.x + 1, currlocation.y, 'E'};
+            std::cerr << "pushing (" << static_cast<int>(currlocation.x) << "," << static_cast<int>(currlocation.y) << ")" << std::endl;
+            location.push(idiot);
         }
         if (!closeWest(matrix[currlocation.x][currlocation.y]) && !closeVisited(matrix[currlocation.x - 1][currlocation.y]))
         {
             Dot_t idiot = {currlocation.x - 1, currlocation.y, 'W'};
-            tovisit.push(idiot);
-            pushed++;
-            //std::cerr << "Added neighbor to the west: (" << static_cast<int>(idiot.x) << "," << static_cast<int>(idiot.y) << ")" << std::endl;
+            std::cerr << "pushing (" << static_cast<int>(currlocation.x) << "," << static_cast<int>(currlocation.y) << ")" << std::endl;
+            location.push(idiot);
         }
-
-        if (pushed > 1)
-        { // multiple possibilities
-            setMultiple(&matrix[currlocation.x][currlocation.y], true);
-            API::setText(currlocation.x, currlocation.y, "M");
-        }
-        else
+        if (connections == 0)
         {
-            char buf[10];
-            sprintf(buf,"(%d,%d)",currlocation.x,currlocation.y);
-            API::setText(currlocation.x, currlocation.y, buf);
-            setMultiple(&matrix[currlocation.x][currlocation.y], false);
-        }    
-        if (pushed == 0)
-        { // Implement backtracking
-            Dot_t cagain = path.top();
-            //std::cerr << "BACKTRACKING initiated from (" << static_cast<int>(cagain.x) << "," << static_cast<int>(cagain.y) << ")" << std::endl;
-            while (!path.empty() && !hasMultiple(matrix[cagain.x][cagain.y]))
+            if (!branch.empty())
             {
-                cagain = path.top();
-                //std::cerr << "Currently at: (" << static_cast<int>(currlocation.x) << "," << static_cast<int>(currlocation.y) << ")" << std::endl;
-                movetopoint(cagain);
-                if (hasMultiple(matrix[cagain.x][cagain.y]))
+                while (!comparedots(branch.top(), location.top()))
                 {
-                    std::cerr << "Multiple paths found at (" << static_cast<int>(cagain.x) << "," << static_cast<int>(cagain.y) << "). Exiting backtracking." << std::endl;
-
-                    // Check if they've been visited already
-                    // Check north:
-                    bool North = !closeNorth(matrix[cagain.x][cagain.y]) && !closeVisited(matrix[cagain.x][cagain.y + 1]);
-                    bool East = !closeEast(matrix[cagain.x][cagain.y]) && !closeVisited(matrix[cagain.x + 1][cagain.y]);
-                    bool South = !closeSouth(matrix[cagain.x][cagain.y]) && !closeVisited(matrix[cagain.x][cagain.y - 1]);
-                    bool West = !closeWest(matrix[cagain.x][cagain.y]) && !closeVisited(matrix[cagain.x - 1][cagain.y]);
-                    //std::cerr<<"N: "<<North<<", S: "<<South<<", E"<<East<<", W"<<West<<std::endl;
-                    if (North || East || South || West)
-                    {
-                        //std::cerr << "Found unvisited neighbors. Exiting backtracking." << std::endl;
-                        break;
-                    }
-                    else
-                    {
-                        //std::cerr << "All neighbors were visited, continuing backtracking" << std::endl;
-                    }
+                    Dot_t temp = location.top();
+                    movetopoint(temp);
+                    std::cerr << "popping (" << static_cast<int>(currlocation.x) << "," << static_cast<int>(currlocation.y) << ")" << std::endl;
+                    location.pop();
                 }
-                //std::cerr<< "Moving to the next point." << std::endl;
-                std::cerr << "Popped: (" << static_cast<int>(cagain.x) << "," << static_cast<int>(cagain.y) << ")" << std::endl;
-                API::setColor(currlocation.x, currlocation.y, 'r');
-                path.pop();
+                branch.pop();
             }
-            //std::cerr << "End of BACKTRACKING." << std::endl;
+            else
+            {
+                while (!location.empty())
+                {
+                    Dot_t temp = location.top();
+                    movetopoint(temp);
+                    std::cerr << "popping (" << static_cast<int>(currlocation.x) << "," << static_cast<int>(currlocation.y) << ")" << std::endl;
+                    location.pop();
+                }
+            }
         }
     }
+    std::cerr << "DFS complete" << std::endl;
 }
