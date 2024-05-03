@@ -131,3 +131,26 @@ void setVisited(char* input, bool isopen){
 
 //     return 0;
 // }
+
+bool Bisvisited(char input)
+{
+    return (input & 8) != 0;
+}
+void Bsetvisited(char *input, bool condition)
+{
+    if (condition)
+    { // set it to true
+        if (!Bisvisited(*input))
+        {
+            
+            *input |= 8;
+        }
+    }
+    else
+    {
+        if (Bisvisited(*input))
+        {
+            *input |= 247;
+        }
+    }
+}

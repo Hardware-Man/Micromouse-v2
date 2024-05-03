@@ -1,6 +1,9 @@
-Maze: bitmanip.o API.o DFS.o main.o maze.o
-	g++ -g bitmanip.o API.o DFS.o main.o maze.o -o Maze
-
+Maze: bitmanip.o API.o DFS.o main.o maze.o stack.o BFS.o Queue.o
+	g++ -g bitmanip.o API.o DFS.o main.o maze.o stack.o BFS.o Queue.o -o Maze
+BFS.o: BFS.cpp
+	g++ -g -c BFS.cpp
+Queue.o: Queue.cpp
+	g++ -g -c Queue.cpp
 bitmanip.o: bitmanip.cpp
 	g++ -g -c  bitmanip.cpp
 
@@ -15,5 +18,7 @@ main.o: main.cpp
 
 maze.o: maze.cpp
 	g++ -g -c  maze.cpp
+stack.o: stack.cpp
+	g++ -g -c stack.cpp
 clean: Maze
 	rm *.o Maze

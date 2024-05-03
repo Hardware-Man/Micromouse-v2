@@ -4,8 +4,4 @@
     #include "API.h"
     void startmaze();
     #define MAZESIZE 16
-
-    
-
-
 #endif

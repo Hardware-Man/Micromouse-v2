@@ -15,4 +15,6 @@
     void setWest(char* input, bool isopen);
     void setVisited(char* input, bool isopen);
     void setMultiple(char* input, bool isopen);
+    bool Bisvisited(char input);
+    void Bsetvisited(char *input, bool condition);
 #endif

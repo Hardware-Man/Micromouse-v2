@@ -1,6 +1,7 @@
 #include "./maze.hpp"
 #include "./bitmanip.hpp"
 #include "./DFS.hpp"
+#include "BFS.hpp"
 #include<string.h>
 
 
@@ -24,4 +25,7 @@ void startmaze(){
     memset(maze,0,sizeof(maze));
     initialize(maze);
     DFS(maze);
+    // std::cerr<<"Boutta start BFS"<<std::endl;
+    
+    BFS(maze);
 }
