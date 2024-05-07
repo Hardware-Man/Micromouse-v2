@@ -38,7 +38,7 @@ void BFS(char matrix[16][16]) {
     while (!queue.IsEmpty()) {
         currlocation = queue.top();
         queue.Dequeue();
-        // //API::setColor(currlocation.x, currlocation.y, 'r');
+        API::setColor(currlocation.x, currlocation.y, 'r');
         //std::cerr << "Current Location: (" << static_cast<int>(currlocation.x) << ", " << static_cast<int>(currlocation.y) << ")" << std::endl;
 
         if (incenter(currlocation)) {
@@ -53,6 +53,7 @@ void BFS(char matrix[16][16]) {
             }
             path.push({0,0,'N'});
             while(!path.Isempty()){
+                API::setColor(path.top().x,path.top().y,'b');
                 movetopoint(path.top());
                 path.pop();
             }
@@ -65,7 +66,7 @@ void BFS(char matrix[16][16]) {
             closeVisited(matrix[currlocation.x][currlocation.y + 1]) &&
             !Bisvisited(matrix[currlocation.x][currlocation.y + 1])) { // North
             //std::cerr << "Adding North neighbor to queue." << std::endl;
-            //API::setColor(currlocation.x, currlocation.y + 1, 'y');
+            API::setColor(currlocation.x, currlocation.y + 1, 'g');
             Bsetvisited(&matrix[currlocation.x][currlocation.y + 1], true);
             parentmatrix[currlocation.x][currlocation.y + 1] = currlocation;
             Dot_t topush = {currlocation.x, currlocation.y + 1, 'n'};
@@ -75,7 +76,7 @@ void BFS(char matrix[16][16]) {
             closeVisited(matrix[currlocation.x][currlocation.y - 1]) &&
             !Bisvisited(matrix[currlocation.x][currlocation.y - 1])) { // South
             //std::cerr << "Adding South neighbor to queue." << std::endl;
-            //API::setColor(currlocation.x, currlocation.y - 1, 'y');
+            API::setColor(currlocation.x, currlocation.y - 1, 'g');
             Bsetvisited(&matrix[currlocation.x][currlocation.y - 1], true);
             parentmatrix[currlocation.x][currlocation.y - 1] = currlocation;
             Dot_t topush = {currlocation.x, currlocation.y - 1, 's'};
@@ -85,7 +86,7 @@ void BFS(char matrix[16][16]) {
             closeVisited(matrix[currlocation.x + 1][currlocation.y]) &&
             !Bisvisited(matrix[currlocation.x + 1][currlocation.y])) { // East
             //std::cerr << "Adding East neighbor to queue." << std::endl;
-            //API::setColor(currlocation.x + 1, currlocation.y, 'y');
+            API::setColor(currlocation.x + 1, currlocation.y, 'g');
             Bsetvisited(&matrix[currlocation.x + 1][currlocation.y], true);
             parentmatrix[currlocation.x + 1][currlocation.y] = currlocation;
             Dot_t topush = {currlocation.x + 1, currlocation.y, 'e'};
@@ -95,12 +96,12 @@ void BFS(char matrix[16][16]) {
             closeVisited(matrix[currlocation.x - 1][currlocation.y]) &&
             !Bisvisited(matrix[currlocation.x - 1][currlocation.y])) { // West
             //std::cerr << "Adding West neighbor to queue." << std::endl;
-            //API::setColor(currlocation.x - 1, currlocation.y, 'y');
+            API::setColor(currlocation.x - 1, currlocation.y, 'g');
             Bsetvisited(&matrix[currlocation.x - 1][currlocation.y], true);
             parentmatrix[currlocation.x - 1][currlocation.y] = currlocation;
             Dot_t topush = {currlocation.x - 1, currlocation.y, 'w'};
             queue.Enqueue(topush);
         }
-        // API::turnLeft();
+    // std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
 }
