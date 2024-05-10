@@ -7,11 +7,11 @@
 
 #ifndef V3
 //scuffed bot
-#define xshutW 23 // S1
-#define xshutNW 22 // S2
-#define xshutN 21 // S5
-#define xshutNE 14  // S3
-#define xshutE 15 // S4
+#define xshutW 5//23 // S1
+#define xshutNW 14//22 // S2
+#define xshutN 4//21 // S5
+#define xshutNE 3//14  // S3
+#define xshutE 6//15 // S4
 
 #endif
 #ifdef V3

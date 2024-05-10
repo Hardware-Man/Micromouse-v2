@@ -36,11 +36,14 @@ void PIDStraight::drive_to_position(double target_position) {
         curB = ENCA.read();
         ABdiff = (curA-prevA) - (curB-prevB);
 
+        Serial.print("ABdiff: ");
+        Serial.println(ABdiff);
+
         adj_offset = ABdiff * 1;
 
 
         //current_position = imu_instance->getHeading();
-        current_position = ENCA.read();//(ENCA.read() + ENCB.read())/2;
+        current_position = (abs(ENCA.read()) + abs(ENCB.read()))/2;//ENCA.read();
 
         // handle cases of numbers above 360
 

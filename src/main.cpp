@@ -2,6 +2,7 @@
 #include <SPI.h>
 #include "lib\Motors.h"
 #include "lib\PIDRotate.h"
+#include "lib\PIDRotateNOIMU.h"
 #include "lib\PIDStraight.h"
 #include "lib\PIDMagicStraight.h"
 #include "lib\tof.h"
@@ -63,19 +64,52 @@ void setup() {
         Serial.println(tof_instance->readR());*/
 
 
-       // pidrotate_instance->rotate_to_angle(90, 10, 5.0);
+        // pidrotate_instance->rotate_to_angle(90, 10, 5.0);
+
+        /*while (true) {
+            pidstraight_instance->drive_to_position(8);
+            delay(5000);
+        }*/
+
+        /*while (true) {
+            Serial.print("TOF L reading:");
+            Serial.println(tof_instance->readL());
+            Serial.print("TOF FL reading:");
+            Serial.println(tof_instance->readFL());
+            Serial.print("TOF F reading:");
+            Serial.println(tof_instance->readF());
+            Serial.print("TOF FR reading:");
+            Serial.println(tof_instance->readFR());
+            Serial.print("TOF R reading:");
+            Serial.println(tof_instance->readR());
+        }*/
+
+        /*while (true) {
+            Serial.print("current angle:");
+            Serial.println(imu_instance->getHeading());
+        }*/
+
+        /*while (true) {
+            Serial.print("left: ");
+            Serial.println(motors_instance->getlefttick());
+            Serial.print("right: ");
+            Serial.println(motors_instance->getrighttick());
+        }*/
 
         if (tof_instance->readF() > 100) {
-            pidstraight_instance->drive_to_position(8);
+            pidstraight_instance->drive_to_position(12);
         } else if (tof_instance->readL() > 100) {
             pidrotate_instance->rotate_to_angle(imu_instance->getHeading()-90, 1.25, 5.0, 0.0001);
         } else if (tof_instance->readR() > 100) {
             pidrotate_instance->rotate_to_angle(imu_instance->getHeading()+90, 1.25, 5.0, 0.0001);
         }
+        //delay(500);
 
         delay(500);
         pidrotate_instance->rotate_to_angle(round(imu_instance->getHeading()/90.0)*90.0, 1.25, 1.0, 0.01);
         delay(500);
+
+        //pidrotate_instance->rotate_to_angle(imu_instance->getHeading()-90, 1.25, 5.0, 0.0001);
 
     }
 

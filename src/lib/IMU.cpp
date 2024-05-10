@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <Wire.h>
 #include "IMU.h"
 
 
@@ -11,6 +12,11 @@ IMU::IMU() {
 
     // Check I2C device address and correct line below (by default address is 0x29 or 0x28)
     //                                   id, address
+    //TwoWire Wire3 = TwoWire(Wire1);
+    //Wire3.setSDA(17);
+    //Wire3.setSCL(16);
+    //Wire3.begin(0x28);
+    //Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &Wire3);
     Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28);
     //while (!Serial) delay(10);  // wait for serial port to open!
     

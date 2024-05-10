@@ -102,13 +102,13 @@ void PIDRotate::rotate_to_angle(double target_angle, int boost, double threshold
         double motor_output = ((kP * error)  /*+ kD * (error-prev_error)/(current_time-prev_time)*/ + cappedIntegral);
         
         if (error > 0.0) {
-            motors_instance->setLeftMotorDirection(true);//false
+            motors_instance->setLeftMotorDirection(false);//false
             Serial.println("left false and right true");
-            motors_instance->setRightMotorDirection(true);//true
+            motors_instance->setRightMotorDirection(false);//true
         } else {
-            motors_instance->setLeftMotorDirection(false);//true
+            motors_instance->setLeftMotorDirection(true);//true
             Serial.println("left true and right false");
-            motors_instance->setRightMotorDirection(false);//false
+            motors_instance->setRightMotorDirection(true);//false
         }
 
         if (motor_output < 0.0) {
