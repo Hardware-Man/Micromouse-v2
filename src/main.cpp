@@ -1,10 +1,12 @@
 #include <Arduino.h>
-
+#include "./lib/Motors.h"
 void setup() {
-Serial.printf("%s","HATSUNE MIKUU!!!!\n");
+    // motors_instance = new Motors();
+    // motors_instance->enableMotors();
+    // motors_instance->setMotorsSpeed(255);
+    Serial.printf("aonsetuhone");
 }
 
 void loop() {
-  
 
 }
